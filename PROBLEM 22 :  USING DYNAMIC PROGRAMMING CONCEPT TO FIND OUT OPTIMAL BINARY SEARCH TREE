@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <limits.h>
+int optimalBST(int keys[], int freq[], int n) {
+    int cost[n][n]; // 2D array to store costs
+    int i, j, k, l, q;
+    for (i = 0; i < n; i++)
+        cost[i][i] = freq[i];
+    for (l = 2; l <= n; l++) {
+        for (i = 0; i <= n - l + 1; i++) {
+            j = i + l - 1;
+            cost[i][j] = INT_MAX; 
+            for (k = i; k <= j; k++) {
+                q = ((k > i) ? cost[i][k - 1] : 0) +
+                    ((k < j) ? cost[k + 1][j] : 0) +
+                    freq[k];
+                if (q < cost[i][j])
+                    cost[i][j] = q;
+            }
+        }
+    }
+    return cost[0][n - 1]; // Return the cost of optimal BST
+}
+int main() {
+    int keys[] = {10, 12, 20};
+    int freq[] = {34, 8, 50};
+    int n = sizeof(keys) / sizeof(keys[0]);
+    printf("Cost of Optimal BST is %d\n", optimalBST(keys, freq, n));
+    return 0;
+}
