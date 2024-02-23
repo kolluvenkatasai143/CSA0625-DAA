@@ -1,0 +1,18 @@
+#include <stdio.h>
+void printPattern(int n) {
+    if (n == 0) {
+        return;
+    }
+    printf("* ");
+    printPattern(n - 1);
+}
+int main() {
+    int rows, i;
+    printf("Enter the number of rows in the pattern: ");
+    scanf("%d", &rows);
+    for (i = 1; i <= rows; i++) {
+        printPattern(i);
+        printf("\n");
+    }
+    return 0;
+}
