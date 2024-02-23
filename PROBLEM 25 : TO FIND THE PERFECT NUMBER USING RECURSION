@@ -1,0 +1,32 @@
+#include <stdio.h>
+int sumOfDivisors(int num, int i) {
+    if (i == 1) {
+        return 1;
+    } else {
+        if (num % i == 0) {
+            return i + sumOfDivisors(num, i - 1);
+        } else {
+            return sumOfDivisors(num, i - 1);
+        }
+    }
+}
+int isPerfect(int num) {
+    int sum = sumOfDivisors(num, num / 2);
+    return (sum == num);
+}
+void findPerfectNumbers(int start, int end) {
+    if (start <= end) {
+        if (isPerfect(start)) {
+            printf("%d is a perfect number.\n", start);
+        }
+        findPerfectNumbers(start + 1, end);
+    }
+}
+int main() {
+    int start, end;
+    printf("Enter the starting and ending numbers of the range: ");
+    scanf("%d %d", &start, &end);
+    printf("Perfect numbers in the range %d to %d are:\n", start, end);
+    findPerfectNumbers(start, end);
+    return 0;
+}
