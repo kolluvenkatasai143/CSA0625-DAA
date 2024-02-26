@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+#define N 4
+
+int minCost;
+void assign(int costMatrix[N][N], int assigned[N], int visited[N], int cost, int k) {
+    if (k == N) {
+        if (cost < minCost)
+            minCost = cost;
+        return;
+    }
+    
+    for (int j = 0; j < N; j++) {
+        if (!visited[j]) {
+            visited[j] = 1;
+            assigned[k] = j;
+            assign(costMatrix, assigned, visited, cost + costMatrix[k][j], k + 1);
+            visited[j] = 0;
+        }
+    }
+}
+
+int solveAssignmentProblem(int costMatrix[N][N]) {
+    int assigned[N];
+    int visited[N];
+  
+    for (int i = 0; i < N; i++)
+        visited[i] = 0;
+    
+    minCost = INT_MAX;
+    assign(costMatrix, assigned, visited, 0, 0);
+    return minCost;
+}
+
+int main() {
+    int costMatrix[N][N] = {
+        {9, 2, 7, 8},
+        {6, 4, 3, 7},
+        {5, 8, 1, 8},
+        {7, 6, 9, 4}
+    };
+    
+    int minCost = solveAssignmentProblem(costMatrix);
+    
+    printf("Minimum cost for assignment is %d\n", minCost);
+    
+    return 0;
+}
+
