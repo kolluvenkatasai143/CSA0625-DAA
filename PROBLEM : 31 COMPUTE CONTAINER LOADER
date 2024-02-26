@@ -1,0 +1,47 @@
+#include <stdio.h>
+int min(int a, int b) {
+    return a < b ? a : b;
+}
+
+int containerLoader(int items[], int n, int containerCapacity) {
+    int dp[MAX_ITEMS + 1][MAX_CONTAINERS + 1];
+    int i, j;
+    for (i = 0; i <= n; i++) {
+        for (j = 0; j <= n; j++) {
+            dp[i][j] = -1;
+        }
+    }
+
+   
+    for (j = 0; j <= n; j++) {
+        dp[0][j] = 0;
+    }
+
+    // Fill the DP table
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            dp[i][j] = dp[i - 1][j];
+            if (items[i - 1] <= j && dp[i - 1][j - items[i - 1]] != -1) {
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - items[i - 1]] + 1);
+            }
+        }
+    }
+    for (j = containerCapacity; j >= 0; j--) {
+        if (dp[n][j] != -1) {
+            return dp[n][j];
+        }
+    }
+
+    return 0;
+}
+
+int main() {
+    int items[] = {2, 3, 5, 7, 10};
+    int n = sizeof(items) / sizeof(items[0]);
+    int containerCapacity = 15;
+
+    int minContainers = containerLoader(items, n, containerCapacity);
+    printf("Minimum number of containers required: %d\n", minContainers);
+
+    return 0;
+}
