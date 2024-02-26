@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 10
+
+void subsetSum(int set[], int n, int targetSum);
+void subsetSumUtil(int set[], int n, int targetSum, int subset[], int subsetSize, int sum, int index);
+
+int main() {
+    int set[MAX_SIZE], n, targetSum;
+
+    printf("Enter the number of elements in the set: ");
+    scanf("%d", &n);
+
+    printf("Enter the elements of the set:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &set[i]);
+    }
+
+    printf("Enter the target sum: ");
+    scanf("%d", &targetSum);
+
+    subsetSum(set, n, targetSum);
+
+    return 0;
+}
+
+void subsetSum(int set[], int n, int targetSum) {
+    int subset[MAX_SIZE];
+    subsetSumUtil(set, n, targetSum, subset, 0, 0, 0);
+}
+
+void subsetSumUtil(int set[], int n, int targetSum, int subset[], int subsetSize, int sum, int index) {
+    if (sum == targetSum) {
+        printf("Subset found: ");
+        for (int i = 0; i < subsetSize; i++) {
+            printf("%d ", subset[i]);
+        }
+        printf("\n");
+        return;
+    }
+
+    if (index == n || sum > targetSum) {
+        return;
+    }
+
+    subset[subsetSize] = set[index];
+    subsetSumUtil(set, n, targetSum, subset, subsetSize + 1, sum + set[index], index + 1);
+
+    subsetSumUtil(set, n, targetSum, subset, subsetSize, sum, index + 1);
+}
